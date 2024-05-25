@@ -9,13 +9,6 @@ import Foundation
 import SwiftData
 import ActivityKit
 
-enum FetchSpeed:Double, CaseIterable, Identifiable {
-    case slow = 5.0
-    case normal = 1.0
-    case fast = 0.5
-    var id: Self { self }
-}
-
 @Observable
 class TransmissionRPC {    
     private var sessionID:String = ""
@@ -26,7 +19,16 @@ class TransmissionRPC {
     var activity: Activity<TransmissionProgressAttributes>? = nil
     
     var config: Item
-    var speed:FetchSpeed = .normal
+    
+    /*
+    func getBasicAuth() -> String {
+        if config.user.isEmpty || config.password.isEmpty { return "" }
+        let passwordData = "\(config.user):\(config.password)".data(using:String.Encoding.utf8)!
+        let base64EncodedCredential = passwordData.base64EncodedString()
+        let authString = "Basic \(base64EncodedCredential)"
+        
+    }
+    */
     
     func storeSessionID() {
         guard let url = URL(string: "\(config.url)/transmission/rpc") else { return }
@@ -96,7 +98,7 @@ class TransmissionRPC {
         // Ensure the timer is invalidated if already running
         stopFetchingTorrentList()
         
-        timer = Timer.scheduledTimer(withTimeInterval: speed.rawValue, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: config.speed.rawValue, repeats: true) { [weak self] _ in
             self?.fetchTorrentList()
             self?.updateActivity()
         }
@@ -258,11 +260,11 @@ class TransmissionRPC {
     
         startFetchingTorrentList()
     }
-    
+
     func updateActivity() {
         guard let activity = self.activity else { return }
         guard let torrentIndex = torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
-        var torrent = torrentList[torrentIndex]
+        let torrent = torrentList[torrentIndex]
         let contentState = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
         
         Task {
@@ -308,7 +310,7 @@ class TransmissionRPC {
             await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: .immediate)
         }
 }
-    
+
     init(mct: ModelContainer) {
         container = mct
         context = ModelContext(mct)

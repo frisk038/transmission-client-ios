@@ -47,14 +47,14 @@ struct ConfigView: View {
                     HStack{
                         Image(systemName: "tortoise")
                         Picker("Speed", selection: $editSpeed) {
-                            ForEach(FetchSpeed.allCases){ opt in
-                                Text(String(describing: opt))
-                            }
+                            Text("slow").tag(FetchSpeed.slow)
+                            Text("normal").tag(FetchSpeed.normal)
+                            Text("fast").tag(FetchSpeed.fast)
                         }.pickerStyle(.segmented)
                         Image(systemName: "hare")
                     }
                     Button("Save", systemImage: "square.and.arrow.down") {
-                        api.speed = editSpeed
+                        api.config.speed = editSpeed
                         api.startFetchingTorrentList()
                         showAlert = true
                     }.alert(isPresented: $showAlert) {
@@ -74,10 +74,10 @@ struct ConfigView: View {
         editUrl = api.config.url.absoluteString
         editPass = api.config.password
         editUser = api.config.user
-        editSpeed = api.speed
+        editSpeed = api.config.speed
     }
 }
 
 #Preview {
-    ConfigView(api: TransmissionRPC(mct: try! ModelContainer(for: Item.self, configurations: try! ModelConfiguration())))
+    ConfigView(api: TransmissionRPC(mct: try! ModelContainer(for: Item.self, configurations: ModelConfiguration())))
 }

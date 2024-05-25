@@ -13,6 +13,7 @@ struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
     @State var paused:Bool = false
     @State var activity: Activity<TransmissionProgressAttributes>? = nil
+    @State var showAlert:Bool = false
     
     var body: some View {
         VStack{
@@ -58,6 +59,12 @@ struct TorrentListView: View {
     var header: some View {
         HStack {
             Button("Add", systemImage: "doc.badge.plus") {
+                showAlert = true
+            }.alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Not available yet..."),
+                    message: Text("Soon you'll be able to add torrent")
+                )
             }
             Spacer()
             if !paused {
