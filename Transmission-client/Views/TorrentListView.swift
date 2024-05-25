@@ -7,15 +7,16 @@
 
 import SwiftUI
 import SwiftData
+import ActivityKit
 
 struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
     @State var paused:Bool = false
+    @State var activity: Activity<TransmissionProgressAttributes>? = nil
     
     var body: some View {
         VStack{
             header
-            
             
             NavigationStack{
                 List(api.torrentList, id: \Torrent.id) { t in
@@ -30,21 +31,28 @@ struct TorrentListView: View {
                     }
                     .listRowBackground(statusColor(status: t.status))
                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                        Button("Pause") {
-                            print("pause!")
-                        }.tint(.gray)
+                        if api.activity == nil {
+                            Button("Start", systemImage: "bell.badge.slash") {
+                                api.startActivity(torrentID: t.id)
+                            }.tint(.blue)
+                        } else {
+                            Button("Stop", systemImage: "bell.badge.waveform") {
+                                api.stopActivity()
+                            }.tint(.red)
+                        }
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button("Notif") {
-                            print("notif!")
+                        Button("Start", systemImage: "play") {
+                            api.startTorrent(torrentID: t.id)
+                        }
+                        .tint(.purple)
+                        Button("Pause", systemImage: "pause") {
+                            api.stopTorrent(torrentID: t.id)
                         }
                         .tint(.orange)
-                            }
+                    }
                 }
             }
-
-            
-            
         }
     }
     var header: some View {
@@ -85,21 +93,7 @@ struct TorrentListView: View {
                 return Color(uiColor: .secondarySystemGroupedBackground)
         }
     }
-    /*
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(url: URL(string: "http://pi5.local:9091/transmission/web/")!)
-            modelContext.insert(newItem)
-            do {
-                try modelContext.save()
-            } catch{
-                print(error)
-            }
-        }
-    }
-     */
 }
-
 
 #Preview {
     TorrentListView(api: TransmissionRPC(mct: try! ModelContainer()))

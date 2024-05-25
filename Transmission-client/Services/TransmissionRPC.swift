@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import ActivityKit
 
 enum FetchSpeed:Double, CaseIterable, Identifiable {
     case slow = 5.0
@@ -22,9 +23,10 @@ class TransmissionRPC {
     private(set) var torrentList:[Torrent] = []
     private var container: ModelContainer
     private var context: ModelContext
+    var activity: Activity<TransmissionProgressAttributes>? = nil
     
     var config: Item
-    var speed:FetchSpeed = .slow
+    var speed:FetchSpeed = .normal
     
     func storeSessionID() {
         guard let url = URL(string: "\(config.url)/transmission/rpc") else { return }
@@ -95,7 +97,8 @@ class TransmissionRPC {
         stopFetchingTorrentList()
         
         timer = Timer.scheduledTimer(withTimeInterval: speed.rawValue, repeats: true) { [weak self] _ in
-                self?.fetchTorrentList()
+            self?.fetchTorrentList()
+            self?.updateActivity()
         }
     }
     
@@ -190,6 +193,62 @@ class TransmissionRPC {
         
     }
     
+    func stopTorrent(torrentID:Int) {
+        guard let url = URL(string: "\(config.url)/transmission/rpc") else { return }
+        var request =  URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(sessionID, forHTTPHeaderField: "X-Transmission-Session-Id")
+        request.httpBody = """
+        {
+           "method": "torrent-stop",
+           "arguments": {
+             "ids": \([torrentID])
+           }
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+            }
+
+            if let jsonData = data {
+                let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                print(jsonData.description)
+            }
+        }
+        task.resume()
+    }
+    
+    func startTorrent(torrentID:Int) {
+        guard let url = URL(string: "\(config.url)/transmission/rpc") else { return }
+        var request =  URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(sessionID, forHTTPHeaderField: "X-Transmission-Session-Id")
+        request.httpBody = """
+        {
+           "method": "torrent-start",
+           "arguments": {
+             "ids": \([torrentID])
+           }
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+            }
+
+            if let jsonData = data {
+                let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                print(jsonData.description)
+            }
+        }
+        task.resume()
+    }
+    
     func updateConfig(config:Item) {
         stopFetchingTorrentList()
     
@@ -199,6 +258,56 @@ class TransmissionRPC {
     
         startFetchingTorrentList()
     }
+    
+    func updateActivity() {
+        guard let activity = self.activity else { return }
+        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
+        var torrent = torrentList[torrentIndex]
+        let contentState = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
+        
+        Task {
+            await activity.update(
+                ActivityContent<TransmissionProgressAttributes.ContentState>(
+                    state: contentState,
+                    staleDate: Date.now + 15,
+                    relevanceScore: 50
+                ),
+                alertConfiguration: nil
+            )
+        }
+    }
+    
+    func startActivity(torrentID: Int) {
+        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == torrentID }) else { return }
+        var torrent = torrentList[torrentIndex]
+        
+        if ActivityAuthorizationInfo().areActivitiesEnabled {
+            do {
+                let tp = TransmissionProgressAttributes(name: torrent.name, id: torrentID)
+                let initialState = TransmissionProgressAttributes.ContentState(progression: torrent.percentComplete, state: torrent.status.rawValue, eta: torrent.eta)
+                
+                let activity = try Activity.request(
+                    attributes: tp,
+                    content: .init(state: initialState, staleDate: nil),
+                    pushType: nil
+                )
+                self.activity = activity
+            } catch {
+                fatalError("can't launch activity \(error)")
+            }
+        }
+    }
+    
+    func stopActivity(){
+        guard let activity = self.activity else { return }
+        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
+        var torrent = torrentList[torrentIndex]
+        let finalContent = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
+        
+        Task {
+            await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: .immediate)
+        }
+}
     
     init(mct: ModelContainer) {
         container = mct

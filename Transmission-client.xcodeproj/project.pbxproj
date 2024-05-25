@@ -10,6 +10,15 @@
 		0915EEBB2BF8F3E30099A8C3 /* ConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0915EEBA2BF8F3E30099A8C3 /* ConfigView.swift */; };
 		0915EEBD2BF93BF90099A8C3 /* Torrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0915EEBC2BF93BF90099A8C3 /* Torrent.swift */; };
 		093E1B2A2BFA2A7D00AD15ED /* TransmissionRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093E1B292BFA2A7D00AD15ED /* TransmissionRPC.swift */; };
+		09A53C342C01C8CC0052E68C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A53C332C01C8CC0052E68C /* WidgetKit.framework */; };
+		09A53C362C01C8CC0052E68C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A53C352C01C8CC0052E68C /* SwiftUI.framework */; };
+		09A53C392C01C8CC0052E68C /* TransmissionProgressBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C382C01C8CC0052E68C /* TransmissionProgressBundle.swift */; };
+		09A53C3B2C01C8CC0052E68C /* TransmissionProgressLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C3A2C01C8CC0052E68C /* TransmissionProgressLiveActivity.swift */; };
+		09A53C3D2C01C8CC0052E68C /* TransmissionProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C3C2C01C8CC0052E68C /* TransmissionProgress.swift */; };
+		09A53C3F2C01C8CE0052E68C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A53C3E2C01C8CE0052E68C /* Assets.xcassets */; };
+		09A53C432C01C8CE0052E68C /* TransmissionProgressExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 09A53C312C01C8CC0052E68C /* TransmissionProgressExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		09A53C492C01C9460052E68C /* TorrentProgressAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C482C01C9460052E68C /* TorrentProgressAttributes.swift */; };
+		09A53C4A2C01C9460052E68C /* TorrentProgressAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C482C01C9460052E68C /* TorrentProgressAttributes.swift */; };
 		09CDFCAC2BF8D43E00C2B4C1 /* Transmission_clientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDFCAB2BF8D43E00C2B4C1 /* Transmission_clientApp.swift */; };
 		09CDFCAE2BF8D43E00C2B4C1 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDFCAD2BF8D43E00C2B4C1 /* TorrentListView.swift */; };
 		09CDFCB02BF8D43E00C2B4C1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDFCAF2BF8D43E00C2B4C1 /* Item.swift */; };
@@ -17,10 +26,43 @@
 		09CDFCB62BF8D43F00C2B4C1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09CDFCB52BF8D43F00C2B4C1 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		09A53C412C01C8CE0052E68C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 09CDFCA02BF8D43E00C2B4C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 09A53C302C01C8CC0052E68C;
+			remoteInfo = TransmissionProgressExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		09A53C442C01C8CE0052E68C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				09A53C432C01C8CE0052E68C /* TransmissionProgressExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0915EEBA2BF8F3E30099A8C3 /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
 		0915EEBC2BF93BF90099A8C3 /* Torrent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Torrent.swift; sourceTree = "<group>"; };
 		093E1B292BFA2A7D00AD15ED /* TransmissionRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionRPC.swift; sourceTree = "<group>"; };
+		09A53C312C01C8CC0052E68C /* TransmissionProgressExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TransmissionProgressExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		09A53C332C01C8CC0052E68C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		09A53C352C01C8CC0052E68C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		09A53C382C01C8CC0052E68C /* TransmissionProgressBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionProgressBundle.swift; sourceTree = "<group>"; };
+		09A53C3A2C01C8CC0052E68C /* TransmissionProgressLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionProgressLiveActivity.swift; sourceTree = "<group>"; };
+		09A53C3C2C01C8CC0052E68C /* TransmissionProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionProgress.swift; sourceTree = "<group>"; };
+		09A53C3E2C01C8CE0052E68C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		09A53C402C01C8CE0052E68C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09A53C482C01C9460052E68C /* TorrentProgressAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentProgressAttributes.swift; sourceTree = "<group>"; };
 		09CDFCA82BF8D43E00C2B4C1 /* Transmission-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Transmission-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		09CDFCAB2BF8D43E00C2B4C1 /* Transmission_clientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transmission_clientApp.swift; sourceTree = "<group>"; };
 		09CDFCAD2BF8D43E00C2B4C1 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
@@ -31,6 +73,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		09A53C2E2C01C8CC0052E68C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09A53C362C01C8CC0052E68C /* SwiftUI.framework in Frameworks */,
+				09A53C342C01C8CC0052E68C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		09CDFCA52BF8D43E00C2B4C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +97,7 @@
 			children = (
 				0915EEBC2BF93BF90099A8C3 /* Torrent.swift */,
 				09CDFCAF2BF8D43E00C2B4C1 /* Item.swift */,
+				09A53C482C01C9460052E68C /* TorrentProgressAttributes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -67,10 +119,33 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		09A53C322C01C8CC0052E68C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				09A53C332C01C8CC0052E68C /* WidgetKit.framework */,
+				09A53C352C01C8CC0052E68C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		09A53C372C01C8CC0052E68C /* TransmissionProgress */ = {
+			isa = PBXGroup;
+			children = (
+				09A53C382C01C8CC0052E68C /* TransmissionProgressBundle.swift */,
+				09A53C3A2C01C8CC0052E68C /* TransmissionProgressLiveActivity.swift */,
+				09A53C3C2C01C8CC0052E68C /* TransmissionProgress.swift */,
+				09A53C3E2C01C8CE0052E68C /* Assets.xcassets */,
+				09A53C402C01C8CE0052E68C /* Info.plist */,
+			);
+			path = TransmissionProgress;
+			sourceTree = "<group>";
+		};
 		09CDFC9F2BF8D43E00C2B4C1 = {
 			isa = PBXGroup;
 			children = (
 				09CDFCAA2BF8D43E00C2B4C1 /* Transmission-client */,
+				09A53C372C01C8CC0052E68C /* TransmissionProgress */,
+				09A53C322C01C8CC0052E68C /* Frameworks */,
 				09CDFCA92BF8D43E00C2B4C1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				09CDFCA82BF8D43E00C2B4C1 /* Transmission-client.app */,
+				09A53C312C01C8CC0052E68C /* TransmissionProgressExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +184,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		09A53C302C01C8CC0052E68C /* TransmissionProgressExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09A53C472C01C8CE0052E68C /* Build configuration list for PBXNativeTarget "TransmissionProgressExtension" */;
+			buildPhases = (
+				09A53C2D2C01C8CC0052E68C /* Sources */,
+				09A53C2E2C01C8CC0052E68C /* Frameworks */,
+				09A53C2F2C01C8CC0052E68C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TransmissionProgressExtension;
+			productName = TransmissionProgressExtension;
+			productReference = 09A53C312C01C8CC0052E68C /* TransmissionProgressExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		09CDFCA72BF8D43E00C2B4C1 /* Transmission-client */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09CDFCB92BF8D43F00C2B4C1 /* Build configuration list for PBXNativeTarget "Transmission-client" */;
@@ -115,10 +208,12 @@
 				09CDFCA42BF8D43E00C2B4C1 /* Sources */,
 				09CDFCA52BF8D43E00C2B4C1 /* Frameworks */,
 				09CDFCA62BF8D43E00C2B4C1 /* Resources */,
+				09A53C442C01C8CE0052E68C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				09A53C422C01C8CE0052E68C /* PBXTargetDependency */,
 			);
 			name = "Transmission-client";
 			productName = "Transmission-client";
@@ -132,9 +227,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
+					09A53C302C01C8CC0052E68C = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					09CDFCA72BF8D43E00C2B4C1 = {
 						CreatedOnToolsVersion = 15.3;
 					};
@@ -154,11 +252,20 @@
 			projectRoot = "";
 			targets = (
 				09CDFCA72BF8D43E00C2B4C1 /* Transmission-client */,
+				09A53C302C01C8CC0052E68C /* TransmissionProgressExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		09A53C2F2C01C8CC0052E68C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09A53C3F2C01C8CE0052E68C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		09CDFCA62BF8D43E00C2B4C1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -171,6 +278,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		09A53C2D2C01C8CC0052E68C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09A53C4A2C01C9460052E68C /* TorrentProgressAttributes.swift in Sources */,
+				09A53C392C01C8CC0052E68C /* TransmissionProgressBundle.swift in Sources */,
+				09A53C3D2C01C8CC0052E68C /* TransmissionProgress.swift in Sources */,
+				09A53C3B2C01C8CC0052E68C /* TransmissionProgressLiveActivity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		09CDFCA42BF8D43E00C2B4C1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,12 +299,80 @@
 				093E1B2A2BFA2A7D00AD15ED /* TransmissionRPC.swift in Sources */,
 				09CDFCAC2BF8D43E00C2B4C1 /* Transmission_clientApp.swift in Sources */,
 				0915EEBD2BF93BF90099A8C3 /* Torrent.swift in Sources */,
+				09A53C492C01C9460052E68C /* TorrentProgressAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		09A53C422C01C8CE0052E68C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 09A53C302C01C8CC0052E68C /* TransmissionProgressExtension */;
+			targetProxy = 09A53C412C01C8CE0052E68C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		09A53C452C01C8CE0052E68C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9SSFL45E6S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TransmissionProgress/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TransmissionProgress;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frisk038.Transmission-client.TransmissionProgress";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		09A53C462C01C8CE0052E68C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9SSFL45E6S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TransmissionProgress/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TransmissionProgress;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frisk038.Transmission-client.TransmissionProgress";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		09CDFCB72BF8D43F00C2B4C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -304,6 +490,7 @@
 		09CDFCBA2BF8D43F00C2B4C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Transmission-client/Transmission_client.entitlements";
@@ -314,6 +501,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -342,6 +530,7 @@
 		09CDFCBB2BF8D43F00C2B4C1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Transmission-client/Transmission_client.entitlements";
@@ -352,6 +541,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -380,6 +570,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		09A53C472C01C8CE0052E68C /* Build configuration list for PBXNativeTarget "TransmissionProgressExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09A53C452C01C8CE0052E68C /* Debug */,
+				09A53C462C01C8CE0052E68C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		09CDFCA32BF8D43E00C2B4C1 /* Build configuration list for PBXProject "Transmission-client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
