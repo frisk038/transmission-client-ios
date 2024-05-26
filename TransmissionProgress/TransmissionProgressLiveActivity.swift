@@ -16,21 +16,21 @@ struct TransmissionProgressLiveActivity: Widget {
             VStack {
                 HStack{
                     Text(context.attributes.name)
+                    Spacer()
                     if context.state.eta != -1 {
-                        Spacer()
                         Text(String("\(context.state.eta/60) min."))
                     }
                 }
                 HStack{
-                    ProgressView(value: context.state.progression * 100)
+                    Gauge(value: context.state.progression, label: {})
                     Text(String(format: "%.1f", context.state.progression * 100) + " %")
                 }
-                .padding()
             }
             //.activityBackgroundTint(Color.cyan)
-            //.activitySystemActionForegroundColor(Color.black)
+            //.activityBackgroundTint(nil)
             .padding()
-
+            .activityBackgroundTint(Color.white.opacity(0.5))
+            
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
@@ -68,28 +68,28 @@ struct TransmissionProgressLiveActivity: Widget {
 }
 
 /*
-extension TransmissionProgressAttributes {
-    fileprivate static var preview: TransmissionProgressAttributes {
-        TransmissionProgressAttributes(name: "World")
-    }
-}
-*/
+ extension TransmissionProgressAttributes {
+ fileprivate static var preview: TransmissionProgressAttributes {
+ TransmissionProgressAttributes(name: "World")
+ }
+ }
+ */
 
 /*
-extension TransmissionProgressAttributes.ContentState {
-    fileprivate static var smiley: TransmissionProgressAttributes.ContentState {
-        TransmissionProgressAttributes.ContentState(emoji: "😀")
-     }
-     
-     fileprivate static var starEyes: TransmissionProgressAttributes.ContentState {
-         TransmissionProgressAttributes.ContentState(emoji: "🤩")
-     }
-}
-
-#Preview("Notification", as: .content, using: TransmissionProgressAttributes.preview) {
-   TransmissionProgressLiveActivity()
-} contentStates: {
-    TransmissionProgressAttributes.ContentState.smiley
-    TransmissionProgressAttributes.ContentState.starEyes
-}
-*/
+ extension TransmissionProgressAttributes.ContentState {
+ fileprivate static var smiley: TransmissionProgressAttributes.ContentState {
+ TransmissionProgressAttributes.ContentState(emoji: "😀")
+ }
+ 
+ fileprivate static var starEyes: TransmissionProgressAttributes.ContentState {
+ TransmissionProgressAttributes.ContentState(emoji: "🤩")
+ }
+ }
+ 
+ #Preview("Notification", as: .content, using: TransmissionProgressAttributes.preview) {
+ TransmissionProgressLiveActivity()
+ } contentStates: {
+ TransmissionProgressAttributes.ContentState.smiley
+ TransmissionProgressAttributes.ContentState.starEyes
+ }
+ */
