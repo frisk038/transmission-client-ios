@@ -11,8 +11,8 @@ import ActivityKit
 
 struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
+    var laMgr: LiveActivityMGR
     @State var paused:Bool = false
-    @State var activity: Activity<TransmissionProgressAttributes>? = nil
     @State var showAlert:Bool = false
     
     var body: some View {
@@ -32,15 +32,9 @@ struct TorrentListView: View {
                     }
                     .listRowBackground(statusColor(status: t.status))
                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                        if api.activity == nil {
-                            Button("Start", systemImage: "bell.badge.slash") {
-                                api.startActivity(torrentID: t.id)
-                            }.tint(.blue)
-                        } else {
-                            Button("Stop", systemImage: "bell.badge.waveform") {
-                                api.stopActivity()
-                            }.tint(.red)
-                        }
+                        Button("Start", systemImage: "bell.badge.slash") {
+                            laMgr.startActivity(torrentID: t.id)
+                        }.tint(.blue)
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button("Start", systemImage: "play") {
@@ -90,19 +84,20 @@ struct TorrentListView: View {
     
     private func statusColor(status:Status) -> Color {
         switch status {
-            case .Stop:
-                return Color.secondary
-            case .Seed:
-                return Color.green
-            case .Error:
-                return Color.red
-            default:
-                return Color(uiColor: .secondarySystemGroupedBackground)
+        case .Stop:
+            return Color.secondary
+        case .Seed:
+            return Color.green
+        case .Error:
+            return Color.red
+        default:
+            return Color(uiColor: .secondarySystemGroupedBackground)
         }
     }
 }
 
-#Preview {
-    TorrentListView(api: TransmissionRPC(mct: try! ModelContainer()))
-}
-
+/*
+ #Preview {
+ TorrentListView(api: TransmissionRPC(mct: try! ModelContainer()), laMgr: LiveActivityMGR(api: nil, updateTime: <#T##TimeInterval#>))
+ }
+ */

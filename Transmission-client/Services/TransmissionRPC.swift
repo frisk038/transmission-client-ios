@@ -16,7 +16,6 @@ class TransmissionRPC {
     private(set) var torrentList:[Torrent] = []
     private var container: ModelContainer
     private var context: ModelContext
-    var activity: Activity<TransmissionProgressAttributes>? = nil
     
     var config: Item
     
@@ -100,7 +99,6 @@ class TransmissionRPC {
         
         timer = Timer.scheduledTimer(withTimeInterval: config.speed.rawValue, repeats: true) { [weak self] _ in
             self?.fetchTorrentList()
-            self?.updateActivity()
         }
     }
     
@@ -260,56 +258,6 @@ class TransmissionRPC {
     
         startFetchingTorrentList()
     }
-
-    func updateActivity() {
-        guard let activity = self.activity else { return }
-        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
-        let torrent = torrentList[torrentIndex]
-        let contentState = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
-        
-        Task {
-            await activity.update(
-                ActivityContent<TransmissionProgressAttributes.ContentState>(
-                    state: contentState,
-                    staleDate: Date.now + 15,
-                    relevanceScore: 50
-                ),
-                alertConfiguration: nil
-            )
-        }
-    }
-    
-    func startActivity(torrentID: Int) {
-        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == torrentID }) else { return }
-        var torrent = torrentList[torrentIndex]
-        
-        if ActivityAuthorizationInfo().areActivitiesEnabled {
-            do {
-                let tp = TransmissionProgressAttributes(name: torrent.name, id: torrentID)
-                let initialState = TransmissionProgressAttributes.ContentState(progression: torrent.percentComplete, state: torrent.status.rawValue, eta: torrent.eta)
-                
-                let activity = try Activity.request(
-                    attributes: tp,
-                    content: .init(state: initialState, staleDate: nil),
-                    pushType: nil
-                )
-                self.activity = activity
-            } catch {
-                fatalError("can't launch activity \(error)")
-            }
-        }
-    }
-    
-    func stopActivity(){
-        guard let activity = self.activity else { return }
-        guard let torrentIndex = torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
-        var torrent = torrentList[torrentIndex]
-        let finalContent = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
-        
-        Task {
-            await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: .immediate)
-        }
-}
 
     init(mct: ModelContainer) {
         container = mct

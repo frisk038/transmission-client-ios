@@ -24,6 +24,7 @@
 		09CDFCB02BF8D43E00C2B4C1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CDFCAF2BF8D43E00C2B4C1 /* Item.swift */; };
 		09CDFCB22BF8D43F00C2B4C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09CDFCB12BF8D43F00C2B4C1 /* Assets.xcassets */; };
 		09CDFCB62BF8D43F00C2B4C1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09CDFCB52BF8D43F00C2B4C1 /* Preview Assets.xcassets */; };
+		09F0E5A92C03272D00F43941 /* LiveActivityMGR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F0E5A82C03272D00F43941 /* LiveActivityMGR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		09CDFCB12BF8D43F00C2B4C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09CDFCB32BF8D43F00C2B4C1 /* Transmission_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Transmission_client.entitlements; sourceTree = "<group>"; };
 		09CDFCB52BF8D43F00C2B4C1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		09F0E5A72C02A30500F43941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		09F0E5A82C03272D00F43941 /* LiveActivityMGR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityMGR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				093E1B292BFA2A7D00AD15ED /* TransmissionRPC.swift */,
+				09F0E5A82C03272D00F43941 /* LiveActivityMGR.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -162,6 +166,7 @@
 		09CDFCAA2BF8D43E00C2B4C1 /* Transmission-client */ = {
 			isa = PBXGroup;
 			children = (
+				09F0E5A72C02A30500F43941 /* Info.plist */,
 				093E1B282BF9EF7000AD15ED /* Services */,
 				0915EEBF2BF944600099A8C3 /* Views */,
 				0915EEBE2BF93C010099A8C3 /* Models */,
@@ -296,6 +301,7 @@
 				0915EEBB2BF8F3E30099A8C3 /* ConfigView.swift in Sources */,
 				09CDFCAE2BF8D43E00C2B4C1 /* TorrentListView.swift in Sources */,
 				09CDFCB02BF8D43E00C2B4C1 /* Item.swift in Sources */,
+				09F0E5A92C03272D00F43941 /* LiveActivityMGR.swift in Sources */,
 				093E1B2A2BFA2A7D00AD15ED /* TransmissionRPC.swift in Sources */,
 				09CDFCAC2BF8D43E00C2B4C1 /* Transmission_clientApp.swift in Sources */,
 				0915EEBD2BF93BF90099A8C3 /* Torrent.swift in Sources */,
@@ -501,6 +507,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Transmission-client/Info.plist";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -520,10 +527,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.frisk038.Transmission-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -541,6 +549,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Transmission-client/Info.plist";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -560,10 +569,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.frisk038.Transmission-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
