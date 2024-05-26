@@ -25,10 +25,13 @@ struct ConfigView: View {
                     TextField("Host", text: $editUrl)
                         .autocorrectionDisabled()
                         .keyboardType(.URL)
+                        .autocapitalization(.none)
                     TextField("User", text: $editUser)
                         .autocorrectionDisabled()
+                        .autocapitalization(.none)
                     TextField("Password", text: $editPass)
                         .autocorrectionDisabled()
+                        .autocapitalization(.none)
                     Button("Save", systemImage: "square.and.arrow.down") {
                         guard let url = URL(string: editUrl) else { return }
                         api.config.url = url

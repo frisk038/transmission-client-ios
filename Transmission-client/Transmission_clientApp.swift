@@ -9,10 +9,7 @@ import SwiftUI
 import SwiftData
 
 // TODO
-// - basic auth
-// - better live activity ui
 // - add torrent
-// - stop activity
 
 @main
 struct Transmission_clientApp: App {

@@ -29,11 +29,11 @@ class LiveActivityMGR {
     
     func startActivity(torrentID: Int) {
         if activity != nil {
-            stopActivity()
+            stopActivity(policy: .immediate)
         }
         
         guard let torrentIndex = api.torrentList.firstIndex(where: { $0.id == torrentID }) else { return }
-        var torrent = api.torrentList[torrentIndex]
+        let torrent = api.torrentList[torrentIndex]
         
         if ActivityAuthorizationInfo().areActivitiesEnabled {
             do {
@@ -59,6 +59,9 @@ class LiveActivityMGR {
         let torrent = api.torrentList[torrentIndex]
         let contentState = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
         
+        if activity.content.state.progression == 1 {
+            stopActivity(policy: .after(Date.now.addingTimeInterval(60)))
+        }
         Task {
             await activity.update(
                 ActivityContent<TransmissionProgressAttributes.ContentState>(
@@ -71,16 +74,16 @@ class LiveActivityMGR {
         }
     }
     
-    func stopActivity(){
+    func stopActivity(policy: ActivityUIDismissalPolicy){
         guard let activity = self.activity else { return }
         guard let torrentIndex = api.torrentList.firstIndex(where: { $0.id == activity.attributes.id }) else { return }
-        var torrent = api.torrentList[torrentIndex]
+        let torrent = api.torrentList[torrentIndex]
         
         stopUpdatingActivity()
         let finalContent = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
         
         Task {
-            await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: .immediate)
+            await activity.end(ActivityContent(state: finalContent, staleDate: nil), dismissalPolicy: policy)
             self.activity = nil
         }
     }

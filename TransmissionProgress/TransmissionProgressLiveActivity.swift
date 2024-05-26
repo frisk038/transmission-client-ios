@@ -23,6 +23,7 @@ struct TransmissionProgressLiveActivity: Widget {
                 }
                 HStack{
                     Gauge(value: context.state.progression, label: {})
+                        .tint(context.state.progression == 1 ? .green : .accentColor)
                     Text(String(format: "%.1f", context.state.progression * 100) + " %")
                 }
             }
