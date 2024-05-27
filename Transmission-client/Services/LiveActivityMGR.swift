@@ -38,7 +38,7 @@ class LiveActivityMGR {
         if ActivityAuthorizationInfo().areActivitiesEnabled {
             do {
                 let tp = TransmissionProgressAttributes(name: torrent.name, id: torrentID)
-                let initialState = TransmissionProgressAttributes.ContentState(progression: torrent.percentComplete, state: torrent.status.rawValue, eta: torrent.eta)
+                let initialState = TransmissionProgressAttributes.ContentState(progression: torrent.percentDone, state: torrent.status.rawValue, eta: torrent.eta)
                 
                 let activity = try Activity.request(
                     attributes: tp,

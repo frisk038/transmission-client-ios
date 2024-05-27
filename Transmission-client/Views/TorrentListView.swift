@@ -11,6 +11,7 @@ import ActivityKit
 import UniformTypeIdentifiers
 
 struct TorrentListView: View {
+
     @Bindable var api:TransmissionRPC
     @State var paused:Bool = false
     @State var showAlert:Bool = false
@@ -29,8 +30,8 @@ struct TorrentListView: View {
                     HStack(alignment:.bottom) {
                         VStack(alignment: .leading) {
                             Text(t.name)
-                            Text(String(format: "%.1f", t.percentComplete * 100) + " %")
-                            ProgressView(value: t.percentComplete)
+                            Text(String(format: "%.1f", t.percentDone * 100) + " %")
+                            ProgressView(value: t.percentDone)
                         }
                         Spacer()
                         Text(t.downloadDir)
@@ -92,11 +93,10 @@ struct TorrentListView: View {
             
             Spacer()
             if !paused {
-                Button("Stop All", systemImage: "playpause") {
+                Button("Stop", systemImage: "playpause") {
                     api.stopAllTorrent()
                     paused = true
                 }
-                .buttonStyle(.bordered)
             } else {
                 Button("Start All", systemImage: "playpause") {
                     api.startAllTorrent()
@@ -104,12 +104,22 @@ struct TorrentListView: View {
                 }
             }
             Spacer()
-            Button("Clean", systemImage: "trash") {
+            Button("Clean", systemImage: "paintbrush") {
                 api.cleanAllTorrent()
             }
+            Spacer()
+            Button("Slow", systemImage: api.turleMode ? "tortoise.fill" : "tortoise") {
+                api.setTurtleMode()
+            }
+            /*
+            Button {
+                api.setTurtleMode()
+            } label: {
+                Image(systemName: api.turleMode ? "tortoise.fill" : "tortoise")
+            }
+             */
         }
-        .padding()
-        .buttonStyle(.bordered)
+        .padding()        
     }
     
     
@@ -127,8 +137,10 @@ struct TorrentListView: View {
     }
 }
 
-/*
- #Preview {
- TorrentListView(api: TransmissionRPC(mct: try! ModelContainer()), laMgr: LiveActivityMGR(api: nil, updateTime: <#T##TimeInterval#>))
- }
- */
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Item.self, configurations: config)
+    
+    return TorrentListView(api: TransmissionRPC(mct: container), laMgr: LiveActivityMGR(api: TransmissionRPC(mct: container), updateTime: 5))
+}
+

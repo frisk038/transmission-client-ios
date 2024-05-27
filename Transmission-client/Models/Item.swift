@@ -17,14 +17,16 @@ enum FetchSpeed: Double, Codable, CaseIterable {
 @Model
 final class Item {
     var url: URL
+    var port: Int
     var user: String
     var password: String
     var speed: FetchSpeed
     
-    init(url: URL = URL(string: "http://example.com:9091")!, user: String = "", password: String = "", speed: FetchSpeed = .normal) {
+    init(url: URL = URL(fileURLWithPath: ""), user: String = "", password: String = "", speed: FetchSpeed = .normal, port: Int = 9091) {
         self.url = url
         self.user = user
         self.password = password
         self.speed = speed
+        self.port = port
     }
 }

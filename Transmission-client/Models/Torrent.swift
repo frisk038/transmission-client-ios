@@ -58,8 +58,26 @@ struct ApiResponse: Codable {
 }
 
 struct Arguments: Codable {
-    let torrents: [Torrent]
+    let torrents: [Torrent]?
+    let altSpeedEnabled: Bool?
+    let configDir: String?
+    let peerLimitPerTorrent: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case torrents
+        case altSpeedEnabled = "alt-speed-enabled"
+        case configDir = "config-dir"
+        case peerLimitPerTorrent = "peer-limit-per-torrent"
+    }
 }
+
+/*
+
+ Origin:
+ Created by YggTorrent on Fri May 17 2024
+ Date added:
+ Fri May 17 2024
+ */
 
 struct Torrent:Codable {
     let addedDate: Date
@@ -69,8 +87,9 @@ struct Torrent:Codable {
     let eta: Int
     let id: Int
     let name: String
-    let percentComplete: Double
     let percentDone: Double
     var status: Status
+    let totalSize: Int
+    let hashString: String
+    let creator: String
 }
-

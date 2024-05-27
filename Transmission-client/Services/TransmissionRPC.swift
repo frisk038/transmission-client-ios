@@ -16,11 +16,12 @@ class TransmissionRPC {
     private(set) var torrentList:[Torrent] = []
     private var container: ModelContainer
     private var context: ModelContext
+    private(set) var turleMode = false
     
     var config: Item
 
     func getURLRequest() -> URLRequest? {
-        guard let url = URL(string: "\(config.url)/transmission/rpc") else { return nil }
+        guard let url = URL(string: "\(config.url):\(config.port)/transmission/rpc") else { return nil }
         var request =  URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(sessionID, forHTTPHeaderField: "X-Transmission-Session-Id")
@@ -32,7 +33,7 @@ class TransmissionRPC {
     }
     
     func storeSessionID() {
-        guard var request = getURLRequest() else { return }
+        guard let request = getURLRequest() else { return }
         
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             guard let resp = response as? HTTPURLResponse else { return }
@@ -56,14 +57,14 @@ class TransmissionRPC {
                "eta",
                "id",
                "percentDone",
-               "percentComplete",
                "name",
-               "status"
-               
+               "status",
+               "totalSize",
+               "hashString",
+               "creator"
              ]
            },
            "method": "torrent-get"
-        }
         """.data(using: .utf8)
                 
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
@@ -73,14 +74,18 @@ class TransmissionRPC {
             }
 
             if let jsonData = data {
-                let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                self.torrentList = apiResp?.arguments.torrents ?? []
-                self.torrentList = self.torrentList.map { torrent in
-                    var modifiedTorrent = torrent
-                    if modifiedTorrent.error != 0 || !modifiedTorrent.errorString.isEmpty {
-                        modifiedTorrent.status = .Error
+                do {
+                    let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                    self.torrentList = apiResp.arguments.torrents ?? []
+                    self.torrentList = self.torrentList.map { torrent in
+                        var modifiedTorrent = torrent
+                        if modifiedTorrent.error != 0 || !modifiedTorrent.errorString.isEmpty {
+                            modifiedTorrent.status = .Error
+                        }
+                        return modifiedTorrent
                     }
-                    return modifiedTorrent
+                } catch {
+                    print(error)
                 }
             }
         }
@@ -96,6 +101,7 @@ class TransmissionRPC {
         
         timer = Timer.scheduledTimer(withTimeInterval: config.speed.rawValue, repeats: true) { [weak self] _ in
             self?.fetchTorrentList()
+            self?.getTurtleMode()
         }
     }
     
@@ -116,11 +122,12 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             if let jsonData = data {
                 let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData.description)
+                print(apiResp?.result ?? "no response")
             }
         }
         task.resume()
@@ -138,11 +145,12 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             if let jsonData = data {
                 let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData)
+                print(apiResp?.result ?? "no response")
             }
         }
         task.resume()
@@ -170,11 +178,12 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             if let jsonData = data {
                 let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData.description)
+                print(apiResp?.result ?? "no response")
             }
         }
         task.resume()
@@ -196,11 +205,12 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             if let jsonData = data {
                 let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData.description)
+                print(apiResp?.result ?? "no response")
             }
         }
         task.resume()
@@ -221,11 +231,78 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             if let jsonData = data {
                 let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData.description)
+                print(apiResp?.result ?? "no response")
+            }
+        }
+        task.resume()
+    }
+    
+    func getTurtleMode() {
+        guard var request = getURLRequest() else { return }
+        request.httpBody = """
+        {
+           "arguments": {
+             "fields": [
+               "peer-limit-per-torrent",
+               "alt-speed-enabled",
+               "config-dir"
+             ]
+           },
+           "method": "session-get"
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+                return
+            }
+
+            if let jsonData = data {
+                do {
+                    let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                    guard let tmode = apiResp.arguments.altSpeedEnabled else { return }
+                    self.turleMode = tmode
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        task.resume()
+    }
+
+    func setTurtleMode() {
+        guard var request = getURLRequest() else { return }
+        turleMode.toggle()
+        request.httpBody = """
+        {
+          "arguments": {
+            "alt-speed-enabled": \(turleMode)
+          },
+          "method": "session-set"
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+                return
+            }
+
+            if let jsonData = data {
+                do {
+                    let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                    print(apiResp.result)
+                } catch {
+                    print(error)
+                }
             }
         }
         task.resume()
@@ -278,6 +355,7 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
                 self.storeSessionID()
+                return
             }
 
             /*if let jsonData = data {
