@@ -280,14 +280,16 @@ class TransmissionRPC {
                 self.storeSessionID()
             }
 
-            if let jsonData = data {
+            /*if let jsonData = data {
                 do {
+                    print(String(data: data!, encoding: .utf8) ?? "default value")
                     let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
                     print(String(data: data!, encoding: .utf8) ?? "default value")
                 } catch {
                     print(error)
                 }
             }
+             */
         }
         task.resume()
     }

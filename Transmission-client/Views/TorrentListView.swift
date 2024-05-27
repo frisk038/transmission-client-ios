@@ -12,9 +12,13 @@ import UniformTypeIdentifiers
 
 struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
-    var laMgr: LiveActivityMGR
     @State var paused:Bool = false
     @State var showAlert:Bool = false
+    @State var showPicker:Bool = false
+    @State var destDir:String = ""
+    @State var fileURL:URL = URL(fileURLWithPath: "")
+    
+    @State var laMgr: LiveActivityMGR
     
     var body: some View {
         VStack{
@@ -51,21 +55,38 @@ struct TorrentListView: View {
             }
         }
     }
-  
+    
     var header: some View {
         HStack {
             Button("Add", systemImage: "doc.badge.plus") {
                 showAlert = true
             }
-            .fileImporter(isPresented: $showAlert, allowedContentTypes: [.item]) { result in
-                do {
-                    let fileUrl = try result.get()
-                    if let str = api.getFileB64(path: fileUrl) {
-                        api.addTorrent(file: str)
+            .sheet(isPresented: $showAlert) {
+                Form{
+                    TextField("download dir", text: $destDir)
+                        .autocapitalization(.none)
+                    if fileURL.absoluteString != "file:///" {
+                        Text(fileURL.lastPathComponent)
                     }
-                } catch {
-                    print("Error reading file")
-                    print(error.localizedDescription)
+                    Button("pick file", systemImage: "folder") {
+                        showPicker = true
+                    }
+                    .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item]) { result in
+                        switch result {
+                        case .success(let file):
+                            fileURL = file
+                        default:
+                            break
+                        }
+                    }
+                    if fileURL.absoluteString != "file:///" && !destDir.isEmpty {
+                        Button("Start new torrent", systemImage: "doc.badge.plus") {
+                            api.addTorrent(path: fileURL, savePath: destDir)
+                            showAlert = false
+                            fileURL = URL(filePath: "")
+                            destDir = ""
+                        }
+                    }
                 }
             }
             
@@ -90,7 +111,7 @@ struct TorrentListView: View {
         .padding()
         .buttonStyle(.bordered)
     }
-
+    
     
     private func statusColor(status:Status) -> Color {
         switch status {
