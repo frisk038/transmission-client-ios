@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import ActivityKit
+import UniformTypeIdentifiers
 
 struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
@@ -50,16 +51,24 @@ struct TorrentListView: View {
             }
         }
     }
+  
     var header: some View {
         HStack {
             Button("Add", systemImage: "doc.badge.plus") {
                 showAlert = true
-            }.alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text("Not available yet..."),
-                    message: Text("Soon you'll be able to add torrent")
-                )
             }
+            .fileImporter(isPresented: $showAlert, allowedContentTypes: [.item]) { result in
+                do {
+                    let fileUrl = try result.get()
+                    if let str = api.getFileB64(path: fileUrl) {
+                        api.addTorrent(file: str)
+                    }
+                } catch {
+                    print("Error reading file")
+                    print(error.localizedDescription)
+                }
+            }
+            
             Spacer()
             if !paused {
                 Button("Stop All", systemImage: "playpause") {
@@ -81,6 +90,7 @@ struct TorrentListView: View {
         .padding()
         .buttonStyle(.bordered)
     }
+
     
     private func statusColor(status:Status) -> Color {
         switch status {

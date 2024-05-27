@@ -65,9 +65,7 @@ class TransmissionRPC {
            "method": "torrent-get"
         }
         """.data(using: .utf8)
-        
-        print(request.allHTTPHeaderFields ?? "novalue")
-        
+                
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409 { // get session id
@@ -233,15 +231,45 @@ class TransmissionRPC {
         task.resume()
     }
     
-    func addTorrent() {
-        let fileName = "lll"
+    private func getFileB64(path fileUrl: URL) -> String? {
+        if fileUrl.startAccessingSecurityScopedResource() {
+            defer { fileUrl.stopAccessingSecurityScopedResource() }
+            
+            /*
+             fetching file if missing locally
+            var error: NSError?
+            NSFileCoordinator().coordinate(readingItemAt: fileUrl, options: .forUploading, error: &error) { url in
+                print("coordinated URL", url)
+                do {
+                    let resources = try fileUrl.resourceValues(forKeys:[.fileSizeKey])
+                    let fileSize = resources.fileSize!
+                    print ("File Size is \(fileSize)")
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+             */
+            
+            do {
+                let inputData = try Data(contentsOf: fileUrl)
+                return inputData.base64EncodedString()
+            } catch {
+                print("Error reading file content: \(error)")
+            }
+        }
+        
+        return nil
+    }
+    
+    func addTorrent(path: URL, savePath:String) {
+        guard let fileData = getFileB64(path: path) else { return }
         guard var request = getURLRequest() else { return }
         request.httpBody = """
         {
            "method": "torrent-add",
            "arguments": {
-             "filename": \(fileName),
-             "download-dir": "/movies"
+             "metainfo": "\(fileData)",
+             "download-dir": "\(savePath)"
            }
         }
         """.data(using: .utf8)
@@ -253,8 +281,12 @@ class TransmissionRPC {
             }
 
             if let jsonData = data {
-                let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
-                print(jsonData.description)
+                do {
+                    let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                    print(String(data: data!, encoding: .utf8) ?? "default value")
+                } catch {
+                    print(error)
+                }
             }
         }
         task.resume()
