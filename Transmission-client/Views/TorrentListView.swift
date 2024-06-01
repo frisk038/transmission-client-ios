@@ -15,10 +15,11 @@ struct TorrentListView: View {
     @Bindable var api:TransmissionRPC
     @State var paused:Bool = false
     @State var showAlert:Bool = false
+    @State var showConfirmation:Bool = false
     @State var showPicker:Bool = false
-    @State var showDetails:Bool = false
     @State var destDir:String = ""
     @State var fileURL:URL = URL(fileURLWithPath: "")
+    @State private var IDToDelete:Int?
     
     @State var laMgr: LiveActivityMGR
     
@@ -49,12 +50,13 @@ struct TorrentListView: View {
                         }
                     }
                     .listRowBackground(statusColor(status: t.status))
-                    /*.swipeActions(edge: .leading, allowsFullSwipe: true) {
-                        Button("Start", systemImage: "bell.badge.slash") {
+                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                        Button("delete", systemImage: "eraser") {
+                            showConfirmation = true
+                            IDToDelete = t.id
                             //laMgr.startActivity(torrentID: t.id)
-                            showDetails = true
-                        }.tint(.blue)
-                    }*/
+                        }.tint(.red)
+                    }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button("Start", systemImage: "play") {
                             api.startTorrent(torrentID: t.id)
@@ -66,6 +68,17 @@ struct TorrentListView: View {
                         .tint(statusColor(status: .Stop))
                     }
                 }.tint(statusColor(status: t.status))
+                .alert(isPresented: $showConfirmation) {
+                    Alert(
+                        title: Text("⚠️ Remove the torrent ?"),
+                        message: Text("Local data are safe 😌, we will just remove the torrent"),
+                        primaryButton: .destructive(Text("Remove"), action: {
+                            guard let id = IDToDelete else { return }
+                            api.removeTorrent(torrentID: id)
+                        }),
+                        secondaryButton: .destructive(Text("Cancel"), action: {})
+                    )
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -116,7 +129,7 @@ struct TorrentListView: View {
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Clean", systemImage: "paintbrush") {
+                    Button("Clean", systemImage: "eraser.line.dashed") {
                         api.cleanAllTorrent()
                     }
                     

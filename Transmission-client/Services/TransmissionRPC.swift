@@ -241,6 +241,32 @@ class TransmissionRPC {
         }
         task.resume()
     }
+  
+    func removeTorrent(torrentID:Int) {
+        guard var request = getURLRequest() else { return }
+        request.httpBody = """
+        {
+           "method": "torrent-remove",
+           "arguments": {
+             "ids": \([torrentID])
+           }
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+                return
+            }
+
+            if let jsonData = data {
+                let apiResp = try? JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                print(apiResp?.result ?? "no response")
+            }
+        }
+        task.resume()
+    }
     
     func getTurtleMode() {
         guard var request = getURLRequest() else { return }

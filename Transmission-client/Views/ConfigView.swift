@@ -19,7 +19,7 @@ struct ConfigView: View {
     @State var editPort: String
     @State var editSpeed: FetchSpeed
     @State var errorMessage: String?
-
+    
     
     var body: some View {
         VStack {
@@ -51,7 +51,7 @@ struct ConfigView: View {
                             showAlert = true
                             return
                         }
-                        guard let port = Int(editPort) else { 
+                        guard let port = Int(editPort) else {
                             errorMessage = "😰 Port number is not valid !"
                             showAlert = true
                             return }
@@ -62,7 +62,7 @@ struct ConfigView: View {
                         api.config.user = editUser
                         api.config.password = editPass
                         showAlert = true
-                         
+                        
                         isFocused = false
                     }
                 }
@@ -92,7 +92,7 @@ struct ConfigView: View {
                         }
                     }
                 }
-              
+                
             }
         }
     }
