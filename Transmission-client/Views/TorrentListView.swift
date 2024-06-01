@@ -74,12 +74,12 @@ struct TorrentListView: View {
                     }
                     .sheet(isPresented: $showAlert) {
                         Form{
-                            TextField("download dir", text: $destDir)
+                            TextField("destination folder on server", text: $destDir)
                                 .autocapitalization(.none)
                             if fileURL.absoluteString != "file:///" {
                                 Text(fileURL.lastPathComponent)
                             }
-                            Button("pick file", systemImage: "folder") {
+                            Button("Pick a torrent file", systemImage: "folder") {
                                 showPicker = true
                             }
                             .fileImporter(isPresented: $showPicker, allowedContentTypes: [.item]) { result in
