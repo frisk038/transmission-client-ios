@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 // TODO
-// - add torrent
+// - remove torrent
 
 @main
 struct Transmission_clientApp: App {

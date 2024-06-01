@@ -10,6 +10,7 @@
 		0915EEBB2BF8F3E30099A8C3 /* ConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0915EEBA2BF8F3E30099A8C3 /* ConfigView.swift */; };
 		0915EEBD2BF93BF90099A8C3 /* Torrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0915EEBC2BF93BF90099A8C3 /* Torrent.swift */; };
 		093E1B2A2BFA2A7D00AD15ED /* TransmissionRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093E1B292BFA2A7D00AD15ED /* TransmissionRPC.swift */; };
+		0970D7972C066A6C00D4F9FF /* TorrentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0970D7962C066A6C00D4F9FF /* TorrentDetailsView.swift */; };
 		09A53C342C01C8CC0052E68C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A53C332C01C8CC0052E68C /* WidgetKit.framework */; };
 		09A53C362C01C8CC0052E68C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A53C352C01C8CC0052E68C /* SwiftUI.framework */; };
 		09A53C392C01C8CC0052E68C /* TransmissionProgressBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A53C382C01C8CC0052E68C /* TransmissionProgressBundle.swift */; };
@@ -55,6 +56,7 @@
 		0915EEBA2BF8F3E30099A8C3 /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
 		0915EEBC2BF93BF90099A8C3 /* Torrent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Torrent.swift; sourceTree = "<group>"; };
 		093E1B292BFA2A7D00AD15ED /* TransmissionRPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionRPC.swift; sourceTree = "<group>"; };
+		0970D7962C066A6C00D4F9FF /* TorrentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsView.swift; sourceTree = "<group>"; };
 		09A53C312C01C8CC0052E68C /* TransmissionProgressExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TransmissionProgressExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		09A53C332C01C8CC0052E68C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		09A53C352C01C8CC0052E68C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -108,6 +110,7 @@
 		0915EEBF2BF944600099A8C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0970D7962C066A6C00D4F9FF /* TorrentDetailsView.swift */,
 				09CDFCAD2BF8D43E00C2B4C1 /* TorrentListView.swift */,
 				0915EEBA2BF8F3E30099A8C3 /* ConfigView.swift */,
 			);
@@ -299,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0915EEBB2BF8F3E30099A8C3 /* ConfigView.swift in Sources */,
+				0970D7972C066A6C00D4F9FF /* TorrentDetailsView.swift in Sources */,
 				09CDFCAE2BF8D43E00C2B4C1 /* TorrentListView.swift in Sources */,
 				09CDFCB02BF8D43E00C2B4C1 /* Item.swift in Sources */,
 				09F0E5A92C03272D00F43941 /* LiveActivityMGR.swift in Sources */,

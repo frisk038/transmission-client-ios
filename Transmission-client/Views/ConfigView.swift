@@ -18,6 +18,7 @@ struct ConfigView: View {
     @State var editUser: String
     @State var editPort: String
     @State var editSpeed: FetchSpeed
+    @State var errorMessage: String?
 
     
     var body: some View {
@@ -42,20 +43,27 @@ struct ConfigView: View {
                         .autocapitalization(.none)
                         .focused($isFocused)
                     Button("Save", systemImage: "square.and.arrow.down") {
-                        guard let url = URL(string: editUrl) else { return }
-                        guard let port = Int(editPort) else { return }
+                        if !editUrl.hasPrefix("http://") && !editUrl.hasPrefix("https://") {
+                            editUrl = "http://" + editUrl
+                        }
+                        guard let url = URL(string: editUrl), let scheme = url.scheme else {
+                            errorMessage = "😨 Server url is not valid !"
+                            showAlert = true
+                            return
+                        }
+                        guard let port = Int(editPort) else { 
+                            errorMessage = "😰 Port number is not valid !"
+                            showAlert = true
+                            return }
+                        
+                        errorMessage = nil
                         api.config.url = url
                         api.config.port = port
                         api.config.user = editUser
                         api.config.password = editPass
                         showAlert = true
+                         
                         isFocused = false
-                    }.alert(isPresented: $showAlert) {
-                        Alert(
-                            title: Text("Your configuration has been saved"),
-                            message: Text("You can now see the torrent list in Torrents section")
-                            
-                        )
                     }
                 }
                 Section("client") {
@@ -73,13 +81,18 @@ struct ConfigView: View {
                         api.startFetchingTorrentList()
                         showAlert = true
                     }.alert(isPresented: $showAlert) {
-                        Alert(
-                            title: Text("Your configuration has been saved"),
-                            message: Text("You can now see the torrent list in Torrents section")
-                            
-                        )
+                        if let errMsg = errorMessage {
+                            Alert(
+                                title: Text(errMsg))
+                        } else {
+                            Alert(
+                                title: Text("🎉 Your configuration has been saved"),
+                                message: Text("You can now see the torrent list in Torrents section 👀")
+                            )
+                        }
                     }
                 }
+              
             }
         }
     }

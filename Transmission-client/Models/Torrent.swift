@@ -79,6 +79,43 @@ struct Arguments: Codable {
  Fri May 17 2024
  */
 
+struct Units {
+    
+    public let bytes: Int
+    
+    public var kilobytes: Double {
+        return Double(bytes) / 1_024
+    }
+    
+    public var megabytes: Double {
+        return kilobytes / 1_024
+    }
+    
+    public var gigabytes: Double {
+        return megabytes / 1_024
+    }
+    
+    public init(bytes: Int) {
+        self.bytes = bytes
+    }
+    
+    public func getReadableUnit() -> String {
+        switch bytes {
+        case 0..<1_024:
+            return "\(bytes) bytes"
+        case 1_024..<(1_024 * 1_024):
+            return "\(String(format: "%.2f", kilobytes)) KB"
+        case 1_024..<(1_024 * 1_024 * 1_024):
+            return "\(String(format: "%.2f", megabytes)) MB"
+        case (1_024 * 1_024 * 1_024)...Int.max:
+            return "\(String(format: "%.2f", gigabytes)) GB"
+        default:
+            return "\(bytes) bytes"
+        }
+    }
+}
+
+
 struct Torrent:Codable {
     let addedDate: Date
     let downloadDir: String
@@ -92,4 +129,20 @@ struct Torrent:Codable {
     let totalSize: Int
     let hashString: String
     let creator: String
+    
+    func sizeReadable() -> String {
+        return Units(bytes: totalSize).getReadableUnit()
+    }
+    
+    func etaReadable() -> String {
+        var result = ""
+        let h = eta / 3600
+        if h > 0 { result = "\(h)h"}
+        let m = (eta % 3600) / 60
+        if m > 0 { result += "\(m)m"}
+        let s = (eta % 3600) % 60
+        if s > 0 { result += "\(s)s"}
+        return result
+    }
 }
+
