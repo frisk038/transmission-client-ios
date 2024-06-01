@@ -24,10 +24,7 @@ struct TorrentListView: View {
     @State var laMgr: LiveActivityMGR
     
     var body: some View {
-        VStack{
-            list
-            //header
-        }
+        list
     }
     
     var list: some View {
@@ -68,17 +65,17 @@ struct TorrentListView: View {
                         .tint(statusColor(status: .Stop))
                     }
                 }.tint(statusColor(status: t.status))
-                .alert(isPresented: $showConfirmation) {
-                    Alert(
-                        title: Text("⚠️ Remove the torrent ?"),
-                        message: Text("Local data are safe 😌, we will just remove the torrent"),
-                        primaryButton: .destructive(Text("Remove"), action: {
-                            guard let id = IDToDelete else { return }
-                            api.removeTorrent(torrentID: id)
-                        }),
-                        secondaryButton: .destructive(Text("Cancel"), action: {})
-                    )
-                }
+                    .alert(isPresented: $showConfirmation) {
+                        Alert(
+                            title: Text("⚠️ Remove the torrent ?"),
+                            message: Text("Local data are safe 😌, we will just remove the torrent"),
+                            primaryButton: .destructive(Text("Remove"), action: {
+                                guard let id = IDToDelete else { return }
+                                api.removeTorrent(torrentID: id)
+                            }),
+                            secondaryButton: .destructive(Text("Cancel"), action: {})
+                        )
+                    }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -141,6 +138,7 @@ struct TorrentListView: View {
                 }
                 
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -198,13 +196,6 @@ struct TorrentListView: View {
             Button("Slow", systemImage: api.turleMode ? "tortoise.fill" : "tortoise") {
                 api.setTurtleMode()
             }
-            /*
-             Button {
-             api.setTurtleMode()
-             } label: {
-             Image(systemName: api.turleMode ? "tortoise.fill" : "tortoise")
-             }
-             */
         }
         .padding()
     }
