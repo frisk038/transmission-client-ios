@@ -62,12 +62,14 @@ struct Arguments: Codable {
     let altSpeedEnabled: Bool?
     let configDir: String?
     let peerLimitPerTorrent: Int?
+    let downloadDir: String?
 
     enum CodingKeys: String, CodingKey {
         case torrents
         case altSpeedEnabled = "alt-speed-enabled"
         case configDir = "config-dir"
         case peerLimitPerTorrent = "peer-limit-per-torrent"
+        case downloadDir = "download-dir"
     }
 }
 

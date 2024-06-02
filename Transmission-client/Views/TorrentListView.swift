@@ -81,6 +81,7 @@ struct TorrentListView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add", systemImage: "doc.badge.plus") {
                         showAlert = true
+                        destDir = api.defaultDir
                     }
                     .sheet(isPresented: $showAlert) {
                         Form{

@@ -17,6 +17,7 @@ class TransmissionRPC {
     private var container: ModelContainer
     private var context: ModelContext
     private(set) var turleMode = false
+    private(set) var defaultDir = ""
     
     var config: Item
 
@@ -39,6 +40,42 @@ class TransmissionRPC {
             guard let resp = response as? HTTPURLResponse else { return }
             if resp.statusCode == 409, let sessionId = resp.allHeaderFields["X-Transmission-Session-Id"] as? String {
                 self.sessionID = sessionId
+            }
+        }
+        task.resume()
+    }
+    
+    func storeServerConfig() {
+        guard var request = getURLRequest() else { return }
+        request.httpBody = """
+        {
+           "arguments": {
+             "fields": [
+               "peer-limit-per-torrent",
+               "alt-speed-enabled",
+               "config-dir",
+               "download-dir"
+             ]
+           },
+           "method": "session-get"
+        }
+        """.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            guard let resp = response as? HTTPURLResponse else { return }
+            if resp.statusCode == 409 { // get session id
+                self.storeSessionID()
+                return
+            }
+            
+            if let jsonData = data {
+                do {
+                    let apiResp = try JSONDecoder().decode(ApiResponse.self, from: jsonData)
+                    guard let dir = apiResp.arguments.downloadDir else { return }
+                    self.defaultDir = dir
+                } catch {
+                    print(error)
+                }
             }
         }
         task.resume()
@@ -98,10 +135,11 @@ class TransmissionRPC {
         }
         // Ensure the timer is invalidated if already running
         stopFetchingTorrentList()
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: config.speed.rawValue, repeats: true) { [weak self] _ in
             self?.fetchTorrentList()
             self?.getTurtleMode()
+            self?.storeServerConfig()
         }
     }
     
@@ -274,9 +312,7 @@ class TransmissionRPC {
         {
            "arguments": {
              "fields": [
-               "peer-limit-per-torrent",
-               "alt-speed-enabled",
-               "config-dir"
+               "alt-speed-enabled"
              ]
            },
            "method": "session-get"
